@@ -30,15 +30,15 @@ jobs:
           ${{ runner.os }}-gradle-caches-
 
     - run: npm i
-      working-directory: App
+      working-directory: ~/App
       name: Install
 
     - run: npm run bundle-android
-      working-directory: App
+      working-directory: ~/App
       name: react-native bundle app
 
     - run: ./gradlew assembleDebug -Dorg.gradle.logging.level=info
-      working-directory: App/android
+      working-directory: ~/App/android
       name: Build Android apk (debug)
 
     - uses: actions/upload-artifact@v2
