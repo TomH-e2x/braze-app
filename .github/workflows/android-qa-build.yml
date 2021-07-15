@@ -29,11 +29,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-caches-
 
-    - run: yarn
+    - run: npm i
       working-directory: App
       name: Install
 
-    - run: yarn bundle-android
+    - run: npm run bundle-android
       working-directory: App
       name: react-native bundle app
 
