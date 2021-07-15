@@ -1,0 +1,41 @@
+name: Android CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+
+    - name: Cache Gradle Wrapper  
+      uses: actions/cache@v2
+      with:
+        path: ~/App/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/App/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-caches-
+
+    - run: yarn
+      working-directory: App
+      name: Install
+
+    - run: yarn bundle-android
+      working-directory: App
+      name: react-native bundle app
+
+    - run: ./gradlew assembleDebug -Dorg.gradle.logging.level=info
+      working-directory: App/android
+      name: Build Android apk (debug)

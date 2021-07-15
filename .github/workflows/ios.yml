@@ -1,0 +1,44 @@
+name: IOS QA BUILD
+
+on:
+  workflow_dispatch: 
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+
+    - name: Install node_modules
+      run: yarn
+      working-directory: App/
+
+    - name: Building bundle
+      working-directory: App/
+      run: |
+        yarn react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+    
+    - run: xcode-select -p
+      name: Xcode select 
+      working-directory: App/ios
+
+    - run: pod install
+      name: Install ios dependencies 
+      working-directory: App/ios
+    
+    - name: Build iOS (debug)
+      run: "xcodebuild \
+        -workspace App/ios/App.xcworkspace \
+        -scheme App \
+        clean archive \
+        -sdk iphoneos \
+        -configuration Debug \
+        -UseModernBuildSystem=NO \
+        -archivePath $PWD/App \
+        CODE_SIGNING_ALLOWED=NO"
