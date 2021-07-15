@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="com_appboy_api_key">7e0c40a4-7716-46fb-84d6-f64c268cdc3d</string>
+<string translatable="false" name="com_appboy_custom_endpoint">sdk.iad-02.braze.com</string>
+</resources>

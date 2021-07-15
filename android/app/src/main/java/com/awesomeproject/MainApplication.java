@@ -12,6 +12,8 @@ import java.lang.reflect.InvocationTargetException;
 import com.appboy.reactbridge.AppboyReactPackage;
 import java.util.List;
 import java.util.Arrays;
+import com.appboy.AppboyLifecycleCallbackListener;
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -22,21 +24,21 @@ public class MainApplication extends Application implements ReactApplication {
           return BuildConfig.DEBUG;
         }
 
-        // @Override
-        // protected List<ReactPackage> getPackages() {
-        //   @SuppressWarnings("UnnecessaryLocalVariable")
-        //   List<ReactPackage> packages = new PackageList(this).getPackages();
-        //   // Packages that cannot be autolinked yet can be added manually here, for example:
-        //   // packages.add(new MyReactNativePackage());
-        //   return packages;
-        // }
+         @Override
+         protected List<ReactPackage> getPackages() {
+           @SuppressWarnings("UnnecessaryLocalVariable")
+           List<ReactPackage> packages = new PackageList(this).getPackages();
+           // Packages that cannot be autolinked yet can be added manually here, for example:
+           // packages.add(new AppboyReactPackage());
+           return packages;
+         }
 
-        @Override
-        protected List<ReactPackage> getPackages() {
-          return Arrays.<ReactPackage>asList(
-              new AppboyReactPackage()
-          );
-        }
+//        @Override
+//        protected List<ReactPackage> getPackages() {
+//          return Arrays.<ReactPackage>asList(
+//              new AppboyReactPackage()
+//          );
+//        }
 
         @Override
         protected String getJSMainModuleName() {
@@ -54,6 +56,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener(true, true));
   }
 
   /**
